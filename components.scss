@@ -1,0 +1,24 @@
+@each $class, $config in $gridi-helpers-text-size-classes {
+    .#{$class} {
+        font-size: map-get($config, font-size);
+        @if map-get($config, line-height) {
+            line-height: map-get($config, line-height);
+        }
+
+        $text-size-for-screens: map-get($config, for-screens);
+
+        @if is-map($text-size-for-screens) {
+            @each $screen-prefix, $sizes in get-screens-map() {
+                @if map-has-key($text-size-for-screens, $screen-prefix) {
+                    @media(min-width: get-screen-size($screen-prefix, min)) {
+                        $screen-text-size: map-get($text-size-for-screens, $screen-prefix);
+                        font-size: map-get($screen-text-size, font-size);
+                        @if map-get($screen-text-size, line-height) {
+                            line-height: map-get($screen-text-size, line-height);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
